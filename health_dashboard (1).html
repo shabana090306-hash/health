@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .bed {
+            background: white;
+            width: 280px;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .bed:hover {
+            transform: translateY(-10px);
+        }
+
+        .status {
+            padding: 6px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .normal {
+            background: #2ecc71;
+        }
+
+        .warning {
+            background: #e74c3c;
+        }
+
+        .circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px auto;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>HEALTH MONITORING DASHBOARD</h1>
+
+<div class="container">
+
+    <div class="bed">
+        <h2>Bed 1</h2>
+        <div class="status normal">Normal</div>
+        <div class="circle">Heart</div>
+        <div class="value">72 bpm</div>
+        <div class="circle">SpO₂</div>
+        <div class="value">98%</div>
+        <div class="circle">Temp</div>
+        <div class="value">36.5°C</div>
+    </div>
+
+    <div class="bed">
+        <h2>Bed 2</h2>
+        <div class="status warning">Critical</div>
+        <div class="circle">Heart</div>
+        <div class="value">110 bpm</div>
+        <div class="circle">SpO₂</div>
+        <div class="value">92%</div>
+        <div class="circle">Temp</div>
+        <div class="value">38°C</div>
+    </div>
+
+    <div class="bed">
+        <h2>Bed 3</h2>
+        <div class="status normal">Normal</div>
+        <div class="circle">Heart</div>
+        <div class="value">65 bpm</div>
+        <div class="circle">SpO₂</div>
+        <div class="value">97%</div>
+        <div class="circle">Temp</div>
+        <div class="value">36.8°C</div>
+    </div>
+
+</div>
+
+</body>
+</html>
