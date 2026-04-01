@@ -1,129 +1,105 @@
-<!DOCTYPE html>  <html>  
-<head>  
-    <title>Health Dashboard</title>  <style>  
-    body {  
-        margin: 0;  
-        font-family: 'Segoe UI', sans-serif;  
-        background: linear-gradient(135deg, #74ebd5, #9face6);  
-        color: #333;  
-    }  
+<!DOCTYPE html><html>
+<head>
+    <title>Health Dashboard (Firebase Connected)</title><!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
 
-    h1 {  
-        text-align: center;  
-        padding: 20px;  
-        color: white;  
-        letter-spacing: 2px;  
-    }  
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+}
 
-    .container {  
-        display: flex;  
-        justify-content: center;  
-        flex-wrap: wrap;  
-        padding: 20px;  
-    }  
+h1 {
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
 
-    .bed {  
-        background: white;  
-        width: 280px;  
-        margin: 15px;  
-        padding: 20px;  
-        border-radius: 15px;  
-        text-align: center;  
-        transition: 0.3s;  
-        box-shadow: 0 8px 20px rgba(0,0,0,0.2);  
-    }  
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 
-    .bed:hover {  
-        transform: translateY(-10px);  
-    }  
+.bed {
+    background: white;
+    width: 280px;
+    margin: 15px;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
 
-    .status {  
-        padding: 6px 15px;  
-        border-radius: 20px;  
-        color: white;  
-        font-size: 14px;  
-        display: inline-block;  
-        margin-bottom: 15px;  
-    }  
+.status {
+    padding: 6px 15px;
+    border-radius: 20px;
+    color: white;
+    display: inline-block;
+}
 
-    .normal {  
-        background: #2ecc71;  
-    }  
+.normal { background: #2ecc71; }
+.warning { background: #e74c3c; }
 
-    .warning {  
-        background: #e74c3c;  
-    }  
+.value { font-size: 18px; font-weight: bold; }
+</style></head><body>
+<h1>REAL-TIME HEALTH DASHBOARD</h1><div class="container"><div class="bed">
+    <h2>Bed 1</h2>
+    <div id="status1" class="status normal">Normal</div>
+    <p>Heart: <span id="heart1">--</span></p>
+    <p>SpO₂: <span id="spo21">--</span></p>
+    <p>Temp: <span id="temp1">--</span></p>
+</div><div class="bed">
+    <h2>Bed 2</h2>
+    <div id="status2" class="status normal">Normal</div>
+    <p>Heart: <span id="heart2">--</span></p>
+    <p>SpO₂: <span id="spo22">--</span></p>
+    <p>Temp: <span id="temp2">--</span></p>
+</div><div class="bed">
+    <h2>Bed 3</h2>
+    <div id="status3" class="status normal">Normal</div>
+    <p>Heart: <span id="heart3">--</span></p>
+    <p>SpO₂: <span id="spo23">--</span></p>
+    <p>Temp: <span id="temp3">--</span></p>
+</div></div><script>
+// 🔹 Replace with your Firebase config
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+};
 
-    .circle {  
-        width: 90px;  
-        height: 90px;  
-        border-radius: 50%;  
-        background: linear-gradient(135deg, #6dd5ed, #2193b0);  
-        color: white;  
-        display: flex;  
-        align-items: center;  
-        justify-content: center;  
-        margin: 10px auto;  
-        font-size: 14px;  
-        font-weight: bold;  
-    }  
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-    .value {  
-        font-size: 18px;  
-        font-weight: bold;  
-        margin-bottom: 10px;  
-    }  
+function updateBed(bedId) {
+    db.ref("beds/bed" + bedId).on("value", (snapshot) => {
+        const data = snapshot.val();
 
-    h2 {  
-        margin-bottom: 5px;  
-    }  
-</style>
+        document.getElementById("heart" + bedId).innerText = data.heart + " bpm";
+        document.getElementById("spo2" + bedId).innerText = data.spo2 + "%";
+        document.getElementById("temp" + bedId).innerText = data.temp + " °C";
 
-</head>  <body>  <h1>HEALTH MONITORING DASHBOARD</h1>  <div class="container">  <!-- Bed 1 -->  
-<div class="bed">  
-    <h2>Bed 1</h2>  
-    <div class="status normal">Normal</div>  
+        let status = "Normal";
+        let className = "normal";
 
-    <div class="circle">Heart</div>  
-    <div class="value">72 bpm</div>  
+        if (data.heart > 100 || data.spo2 < 95 || data.temp > 37.5) {
+            status = "Critical";
+            className = "warning";
+        }
 
-    <div class="circle">SpO₂</div>  
-    <div class="value">98%</div>  
+        let statusEl = document.getElementById("status" + bedId);
+        statusEl.innerText = status;
+        statusEl.className = "status " + className;
+    });
+}
 
-    <div class="circle">Temp</div>  
-    <div class="value">36.5°C</div>  
-</div>  
-
-<!-- Bed 2 -->  
-<div class="bed">  
-    <h2>Bed 2</h2>  
-    <div class="status warning">Critical</div>  
-
-    <div class="circle">Heart</div>  
-    <div class="value">110 bpm</div>  
-
-    <div class="circle">SpO₂</div>  
-    <div class="value">92%</div>  
-
-    <div class="circle">Temp</div>  
-    <div class="value">38°C</div>  
-</div>  
-
-<!-- Bed 3 -->  
-<div class="bed">  
-    <h2>Bed 3</h2>  
-    <div class="status normal">Normal</div>  
-
-    <div class="circle">Heart</div>  
-    <div class="value">65 bpm</div>  
-
-    <div class="circle">SpO₂</div>  
-    <div class="value">97%</div>  
-
-    <div class="circle">Temp</div>  
-    <div class="value">36.8°C</div>  
-</div>
-
-</div>  </body>  
-</html>  
-Convert this program into zip file
+// Listen for all beds
+updateBed(1);
+updateBed(2);
+updateBed(3);
+</script></body>
+</html> 
